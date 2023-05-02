@@ -1,17 +1,14 @@
 import React from 'react';
-import './App.css';
-import Navbar from './components/Navbar';
-import Intro from './components/Intro';
-import CardContainer from './components/CardContainer';
-
+import { Route, Routes } from 'react-router-dom';
+import Main from './Main';
+import CreateSurvey from './CreateSurvey';
 
 function App() {
   return (
-    <div className="App">
-      <Navbar />
-      <Intro />
-      <CardContainer/>
-    </div>
+    <Routes> 
+      <Route exact path="/" element={<Main />} />
+      <Route exact path="/create_survey" element={<CreateSurvey />} />
+    </Routes>
   );
 }
 
