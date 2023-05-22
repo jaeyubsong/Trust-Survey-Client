@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { initKlaytn, abi } from './klaytn';
 
 ReactDOM.render(
   <Router>
@@ -15,3 +16,4 @@ ReactDOM.render(
 );
 
 reportWebVitals();
+initKlaytn(abi).then(() => console.log('initKlaytn done.'));
