@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import './CreateSurvey.css';
 import { motion } from 'framer-motion';
 import Sidebar from './components/create_survey/Sidebar';
+import Navbar from './components/main/Navbar';
 import Toggle from 'react-toggle';
-import 'react-toggle/style.css';
 import Modal from 'react-modal';
-import {AiOutlineCheckCircle} from 'react-icons/ai'
+
+import 'react-toggle/style.css';
 
 function CreateSurvey() {
   const [currentStep, setCurrentStep] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   /* Modal */
   const [isSuccessModalOpen, setIsSucessModalOpen] = useState(false);
@@ -76,15 +76,14 @@ function CreateSurvey() {
       });
 
       const responseData = await response.json();
-      debugger;
-      if (response.status != 200) {
+
+      if (response.status !== 200) {
         throw new Error('Failed to fetch data');
       }
       // Show the success modal
       setIsSucessModalOpen(true);
 
     } catch (error) {
-      debugger;
       // Show the failure modal
       setIsFailureModalOpen(true); 
     }
@@ -115,6 +114,8 @@ function CreateSurvey() {
 
 
   return (
+    <div>
+      <Navbar />
     <div className="wrapper">
       <Sidebar />
     <div className="survey-container-wrapper">
@@ -122,21 +123,21 @@ function CreateSurvey() {
 
       {/* Success modal */}
       {isSuccessModalOpen && (<Modal isOpen={isSuccessModalOpen} onRequestClose={() => setIsSucessModalOpen(false)}
-       className="modal"
+       className="modal_for_sr"
        overlayClassName="modal-overlay">
       <h3>✅ Completed</h3>
       <p>Your survey has been registered.</p>
-        <button onClick={() => setIsSucessModalOpen(false)}>Close</button>
+        <button onClick={() => {setIsSucessModalOpen(false); window.location.href = '/';}}>Close</button>
       </Modal>)}
 
       {/* Failure modal */}
       {isFailureModalOpen && 
       (<Modal isOpen={isFailureModalOpen} onRequestClose={() => setIsFailureModalOpen(false)}  
-       className="modal"
+       className="modal_for_sr"
       overlayClassName="modal-overlay">
         <h2>Error!</h2>
         <p>Error occurred submitting your survey.</p>
-        <button onClick={() => setIsFailureModalOpen(false)}>Close</button>
+        <button onClick={() => {setIsFailureModalOpen(false); window.location.href = '/';}}>Close</button>
       </Modal>)}
 
       { /* STEP 1 */ }
@@ -168,7 +169,7 @@ function CreateSurvey() {
         </div>
         <div className="date_wrapper">
           <div className="form-group">
-            <label>Automatic Closure:</label>
+            <label>Manual Closure:</label>
             <div className="yesandno">
               <div className="radio">
                 <input type="radio" id="automatic-closure-yes" name="automatic-closure" value="yes" checked={automaticClosure} onChange={handleAutomaticClosureChange} />
@@ -180,12 +181,10 @@ function CreateSurvey() {
               </div>
             </div>
           </div>
-        {automaticClosure && (
           <div className="form-group">
             <label htmlFor="automaticClosingDatetime">End Date:</label>
             <input type="date" id="automaticClosingDatetime" name="automaticClosingDatetime" value={automaticClosingDatetime} onChange={(event) => setAutomaticClosingDatetime(event.target.value)} />
           </div>
-        )}
         </div>
         <div className="form-group">
           <label htmlFor="reward">Compensation Amount (ETH)</label>
@@ -309,6 +308,7 @@ function CreateSurvey() {
         </motion.div>
     )}
       </div>
+    </div>
     </div>
     </div>
 

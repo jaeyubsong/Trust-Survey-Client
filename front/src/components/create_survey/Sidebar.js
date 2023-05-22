@@ -1,6 +1,6 @@
 import React from 'react';
 import "./Sidebar.css"
-import { FaInfo, FaCheck, FaFileAlt, FaArrowLeft } from 'react-icons/fa';
+import { FaInfo, FaFileAlt, FaArrowLeft } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
 import { AiFillLock} from 'react-icons/ai'
 
@@ -12,10 +12,10 @@ function Sidebar() {
 
   return (
     <div className="sidebar">
-        <div className="back" onClick={handleBackToHomepage} style={{cursor: "pointer"}}>
+        {/* <div className="back" onClick={handleBackToHomepage} style={{cursor: "pointer"}}>
             <FaArrowLeft />
             <span> Back to Homepage</span>
-        </div>
+        </div> */}
       <h2>Progress</h2>
       <ul>
         <li className="basic_info">

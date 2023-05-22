@@ -1,0 +1,96 @@
+.survey-table-header {
+    color: #000;
+    display: flex;
+    font-weight: bold;
+    font-size: 13px;
+    border-bottom: 1px solid #dcdcdc;
+}
+
+.survey-table-cell {
+    flex: 1;
+    padding: 1rem;
+    text-align: left;
+    justify-content: space-between;
+}
+
+
+.survey-table-row {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #dcdcdc;
+    transition: background-color 0.2s ease;
+}
+
+.survey-table-row:hover {
+    background-color: #f2f2f2;
+}
+
+.survey-table-row:last-of-type {
+    border-bottom: none;
+}
+
+.survey-table-cell.survey-table-sticker {
+    text-align: left;
+    width: 100px;
+}
+
+.survey-table-cell.survey-table-title {
+    text-align: left;
+}
+
+.survey-table-cell.survey-table-summary {
+    text-align: left;
+}
+
+.survey-table-cell.survey-table-closing-date {
+    text-align: left;
+}
+
+.survey-table-cell.survey-table-reward {
+    text-align: center;
+}
+
+.survey-table-cell.survey-table-max-attendee-count {
+    text-align: center;
+}
+
+.survey-header h1 {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.survey-header p {
+    font-size: 1.2rem;
+    margin: 1rem 0 0;
+}
+
+.survey-table-container {
+    background-color: #fff;
+    padding: 2rem 2rem 2rem 5px;
+}
+
+.survey-table {
+    margin: 2rem 2rem;
+    width: 95%;
+    border-collapse: collapse;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.2);
+    padding-left: 5px;
+}
+
+.survey-table-container h1,
+.survey-table-container p {
+    text-align: left;
+    margin: 0;
+    padding-left: 1rem;
+}
+
+a {
+    color: inherit;
+    /* use the parent element's color */
+    text-decoration: none;
+    /* remove the underline */
+    cursor: pointer;
+    /* make it look clickable */
+}

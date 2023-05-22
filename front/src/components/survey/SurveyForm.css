@@ -1,0 +1,101 @@
+.survey-form-container {
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 10px 30px;
+    padding-top: 5px;
+    margin: 20px;
+    width: 85%;
+    margin-top: 40px;
+}
+
+.survey-form-questions {
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-bottom: 120px;
+    font-weight: bold;
+}
+
+.survey-form-metadata {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.survey-form-metadata p {
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+}
+
+.survey-form-metadata p svg {
+    margin-right: 8px;
+}
+
+.survey-question {
+    margin-bottom: 40px;
+}
+
+.survey-question label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.survey-question textarea {
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    line-height: 1.5;
+    resize: vertical;
+}
+
+.survey-form-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    margin-right: -15px;
+}
+
+.admin-btn {
+    background-color: #6f42c1 !important;
+    color: #fff !important;
+}
+
+.admin-btn-disabled {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+}
+
+.submit-btn {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.submit-btn-disabled {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+}
+
+.error_message {
+    margin-top: 10px;
+    margin-bottom: 15px;
+    font-size: 15px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    color: red !important;
+}

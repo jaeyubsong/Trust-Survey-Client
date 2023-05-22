@@ -1,0 +1,16 @@
+.survey-list-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+
+.SurveyListSide {
+    width: 20%;
+    margin-right: 2rem;
+    margin-left: 2rem;
+}
+
+.Table {
+    width: 75%;
+}
