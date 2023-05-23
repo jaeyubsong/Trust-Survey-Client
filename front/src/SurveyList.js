@@ -10,7 +10,7 @@ const SurveyList = () => {
 
   useEffect(() => {
     axios
-      .get('http://127.0.0.1:8080/survey')
+      .get('http://3.27.95.249:8080/survey')
       .then(res => {
         setSurveys(res.data);
       })

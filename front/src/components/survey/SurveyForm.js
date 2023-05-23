@@ -34,7 +34,7 @@ const SurveyForm = ({ survey }) => {
           participantWalletId: cookies.walletAddress,
           answers,
         };
-        fetch('http://127.0.0.1:8080/participate', {
+        fetch('http://3.27.95.249:8080/participate', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
