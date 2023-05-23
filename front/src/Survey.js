@@ -13,7 +13,7 @@ const Survey = () => {
   useEffect(() => { 
     debugger;
     axios
-      .get(`http://143.248.134.9:8080/survey/${new URLSearchParams(window.location.search).get("id")}`)
+      .get(`http://127.0.0.1:8080/survey/${new URLSearchParams(window.location.search).get("id")}`)
       .then(res => {
         debugger;
         setSurvey(res.data);
