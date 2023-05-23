@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaTrophy, FaCalendarAlt, FaUserFriends } from 'react-icons/fa';
 import './SurveyForm.css';
-import Modal from 'react-modal'; 
+import Modal from 'react-modal';
 import { useCookies } from 'react-cookie';
 
 const SurveyForm = ({ survey }) => {
@@ -25,13 +25,13 @@ const SurveyForm = ({ survey }) => {
         newAnswers[index] = event.target.value;
         setAnswers(newAnswers);
       };
-    
+
       const handleSubmit = (event) => {
         event.preventDefault();
         debugger;
         const body = {
           surveyId: survey.id,
-          participantWalletId: cookies.walletAddress,
+          participantWalletId: cookies.walletAddress, // window.web3_.account
           answers,
         };
         fetch('http://143.248.134.9:8080/participate', {
@@ -62,7 +62,7 @@ const SurveyForm = ({ survey }) => {
     };
 
     debugger;
-    
+
     return (
         <div>
         {isSuccessModalOpen && (<Modal isOpen={isSuccessModalOpen} onRequestClose={() => setIsSucessModalOpen(false)}
@@ -74,8 +74,8 @@ const SurveyForm = ({ survey }) => {
         </Modal>)}
 
         {/* Failure modal */}
-        {isFailureModalOpen && 
-        (<Modal isOpen={isFailureModalOpen} onRequestClose={() => setIsFailureModalOpen(false)}  
+        {isFailureModalOpen &&
+        (<Modal isOpen={isFailureModalOpen} onRequestClose={() => setIsFailureModalOpen(false)}
         className="modal_for_sr"
         overlayClassName="modal-overlay">
             <h2>Error!</h2>
@@ -110,7 +110,7 @@ const SurveyForm = ({ survey }) => {
               )}
             </div>
           </div>
-  
+
           <div className="survey-form-container survey-form-questions">
             <h2>Questions</h2>
             <ol>
@@ -133,10 +133,10 @@ const SurveyForm = ({ survey }) => {
                     <button type="submit" className={`submit-btn ${isSubmitDisabled() ? 'submit-btn-disabled' : ''}`} disabled={isSubmitDisabled()}>Submit</button>
                     {cookies.walletAddress === survey.publisherWalletId ? (
                         <button type="button" className="admin-btn">Admin</button>
-                    ) : ( 
+                    ) : (
                         <button type="button" className="admin-btn admin-btn-disabled" disabled>Admin</button>
                     )}
-                </div>        
+                </div>
         </div>
         </form>
         </div>
