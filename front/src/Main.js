@@ -28,11 +28,11 @@ function Main() {
       <Navbar />
       <Intro />
       <CardContainer />
-      <WalletAddressModal
+      {/* <WalletAddressModal
         isOpen={isWalletAddressModalOpen}
         onRequestClose={handleCloseModal}  // Change to onRequestClose
         onSubmit={handleSubmit}
-      />
+      /> */}
     </div>
   );
 }

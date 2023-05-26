@@ -48,8 +48,6 @@ function CreateSurvey() {
     tmp_date.setHours(23, 59, 59);
     const final_date = tmp_date.toISOString().slice(0, -5) + 'Z'
 
-    debugger;
-
     const surveyData = JSON.stringify({
       "publisherWalletId": publisherWalletId,
       "title": title,
@@ -63,11 +61,9 @@ function CreateSurvey() {
       "reward": Number(reward),
       "questions": questions
     })
-
-    debugger;
-
+ 
     try {
-      const response = await fetch('http://143.248.134.9:8080/survey', {
+      const response = await fetch('http://3.27.95.249:8080/survey', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

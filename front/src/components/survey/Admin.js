@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import Navbar from './components/main/Navbar';
-import Table from './components/survey_list/Table';
-import SurveyListSide from './components/survey_list/SurveyListSide';
-import SurveyForm from './components/survey/SurveyForm';
-import './SurveyList.css';
+import Navbar from '../main/Navbar';
+import Table from '../survey_list/Table';
+import SurveyListSide from '../survey_list/SurveyListSide';
+import SurveyForm from './SurveyForm';
+import '../../SurveyList.css';
 
-const Survey = () => {
+const Admin = () => {
   const [survey, setSurvey] = useState({});
 
   useEffect(() => { 
@@ -21,7 +21,7 @@ const Survey = () => {
       });
   }, []);
 
-  return (
+return (
     <div>
       <Navbar />
       <div className="survey-list-container">
@@ -36,4 +36,4 @@ const Survey = () => {
   );
 };
 
-export default Survey;
+export default Admin;

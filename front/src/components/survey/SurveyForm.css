@@ -99,3 +99,76 @@
     font-weight: bold;
     color: red !important;
 }
+
+.response-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 80px;
+    margin-top: 20px;
+    font-size: 14px;
+    /* Add margin-top value as per your preference */
+}
+
+
+.response-table th,
+.response-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.response-table th {
+    background-color: #f2f2f2;
+}
+
+.response-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.response-table th:first-child,
+.response-table td:first-child {
+    width: 20%;
+}
+
+.response-table th:last-child,
+.response-table td:last-child {
+    width: 80%;
+}
+
+.download-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50 !important;
+    color: white !important;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-left: 0px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    transition: background-color 0.3s ease !important;
+}
+
+.modal_for_sr {
+    margin-top: -20px !important;
+}
+
+.modal_for_sr h3 {
+    margin-top: -5px;
+}
+
+.yes-button {
+    margin-top: 10px;
+    margin-right: 0px;
+}
+
+.cancel-button {
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.yes-button:hover {
+    background-color: #FF7F50 !important;
+}
+
+.cancel-button:hover {
+    background-color: #E65C3D !important;
+}

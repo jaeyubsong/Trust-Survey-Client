@@ -22,13 +22,13 @@ const SurveyListSide = ({ surveys, flag }) => {
         )}
       </div>
 
-      <div class="container-box">
-        <div class="search-text">Search Survey</div>
-        <div class="search-container">
-            <div class="search-bar">
-                <input type="text" class="search-input" placeholder="Search surveys" />
+      <div className="container-box">
+        <div className="search-text">Search Survey</div>
+        <div className="search-container">
+            <div className="search-bar">
+                <input type="text" className="search-input" placeholder="Search surveys" />
             </div>
-            <button class="search-button">Search</button>
+            <button className="search-button">Search</button>
         </div>
 
 

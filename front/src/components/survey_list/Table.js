@@ -1,7 +1,11 @@
 import React from 'react';
 import './Table.css';
+import { useCookies } from 'react-cookie';
 
 const Table = ({ surveys }) => {
+
+  const [cookies, setCookie] = useCookies(['walletAddress']);
+
   const formatClosingDate = (dateString) => {
     if (dateString) {
       const date = new Date(dateString);
@@ -17,12 +21,21 @@ const Table = ({ surveys }) => {
   };
 
   const getSticker = (survey) => {
-    if (survey.responses.length < survey.maxAttendeeCount) {
-      return <img src="https://img.shields.io/badge/Open-blue"></img>;
-    } else {
-      return <img src="https://img.shields.io/badge/Closed-red"></img>;
-    }
-  };
+    return (
+      <div>
+        {survey.publisherWalletId === cookies.walletAddress && (<img src="https://img.shields.io/badge/Owner-green" alt="Owner badge"></img>)}
+        {survey.closed && survey.responses.some((response) => response.participantWalletId === cookies.walletAddress) ? (
+          <img src="https://img.shields.io/badge/Rewarded-yellow" alt="Rewarded badge"></img>
+        ) : (
+          !survey.closed ? (<img src="https://img.shields.io/badge/Open-blue" alt="Open badge"></img>) : (<img src="https://img.shields.io/badge/Closed-red" alt="Closed badge"></img>)
+        )}
+        {!survey.closed && survey.responses.some((response) => response.participantWalletId === cookies.walletAddress) && (
+          <img src="https://img.shields.io/badge/Participated-purple" alt="Participated badge"></img>
+        )}
+      </div>
+    )
+  }
+
 
   return (
     <div className="survey-table-container">
