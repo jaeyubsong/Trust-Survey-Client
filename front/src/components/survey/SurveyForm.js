@@ -1,9 +1,17 @@
+<<<<<<< HEAD
   import React, { useState } from 'react';
   import { FaTrophy, FaCalendarAlt, FaUserFriends } from 'react-icons/fa';
   import './SurveyForm.css';
   import Modal from 'react-modal'; 
   import { useCookies } from 'react-cookie';
   import axios from 'axios';
+=======
+import React, { useState } from 'react';
+import { FaTrophy, FaCalendarAlt, FaUserFriends } from 'react-icons/fa';
+import './SurveyForm.css';
+import Modal from 'react-modal';
+import { useCookies } from 'react-cookie';
+>>>>>>> origin/feature/metamask-klay-contract-call-example
 
   const SurveyForm = ({ survey }) => {
       const [cookies] = useCookies(['walletAddress']);
@@ -14,6 +22,7 @@
 
       const [isAdminPageOpen, setIsAdminPageOpen] = useState(false);
 
+<<<<<<< HEAD
       const formatClosingDate = (dateString) => {
           if (dateString) {
             const date = new Date(dateString);
@@ -22,6 +31,21 @@
           } else {
             return " ";
           }
+=======
+      const handleAnswerChange = (index, event) => {
+        const newAnswers = [...answers];
+        newAnswers[index] = event.target.value;
+        setAnswers(newAnswers);
+      };
+
+      const handleSubmit = (event) => {
+        event.preventDefault();
+        debugger;
+        const body = {
+          surveyId: survey.id,
+          participantWalletId: cookies.walletAddress, // window.web3_.account
+          answers,
+>>>>>>> origin/feature/metamask-klay-contract-call-example
         };
 
         const handleAnswerChange = (index, event) => {
@@ -69,6 +93,7 @@
           return false;
       };
 
+<<<<<<< HEAD
       const handleDownloadJSON = () => {
         const jsonData = JSON.stringify(survey);
         const blob = new Blob([jsonData], { type: 'application/json' });
@@ -86,6 +111,36 @@
         URL.revokeObjectURL(url);
       };
 
+=======
+    const isSubmitDisabled = () => {
+        if (survey.responses) {
+            return survey.responses.some((response) => response.participantWalletId === cookies.walletAddress);
+        }
+        return false;
+    };
+
+    debugger;
+
+    return (
+        <div>
+        {isSuccessModalOpen && (<Modal isOpen={isSuccessModalOpen} onRequestClose={() => setIsSucessModalOpen(false)}
+        className="modal_for_sr"
+        overlayClassName="modal-overlay">
+        <h3>✅ Completed</h3>
+        <p>Your response has been recorded.</p>
+            <button onClick={() => setIsSucessModalOpen(false)}>Close</button>
+        </Modal>)}
+
+        {/* Failure modal */}
+        {isFailureModalOpen &&
+        (<Modal isOpen={isFailureModalOpen} onRequestClose={() => setIsFailureModalOpen(false)}
+        className="modal_for_sr"
+        overlayClassName="modal-overlay">
+            <h2>Error!</h2>
+            <p>Error occurred submitting your response.</p>
+            <button onClick={() => setIsFailureModalOpen(false)}>Close</button>
+        </Modal>)}
+>>>>>>> origin/feature/metamask-klay-contract-call-example
 
       // close survey
         const handleClose = (ans) => {
@@ -175,6 +230,7 @@
                 )}
               </div>
             </div>
+<<<<<<< HEAD
                           
             {!isAdminPageOpen ? (<div className="survey-form-container survey-form-questions">
               <h2>Questions</h2>
@@ -213,6 +269,41 @@
                         setIsCloseModalOpen(true)
                       }
                       // setIsAdminPageOpen(true);
+=======
+          </div>
+
+          <div className="survey-form-container survey-form-questions">
+            <h2>Questions</h2>
+            <ol>
+              {survey.questions &&
+                survey.questions.map((question, index) => (
+                  <li key={index}>
+                    <div className="survey-question">
+                      <label>{question}</label>
+                      <textarea
+                        name={`answer-${index}`}
+                        rows="4"
+                        value={answers[index]}
+                        onChange={(event) => handleAnswerChange(index, event)}
+                      />
+                    </div>
+                  </li>
+                ))}
+            </ol>
+                <div className="survey-form-footer">
+                    <button type="submit" className={`submit-btn ${isSubmitDisabled() ? 'submit-btn-disabled' : ''}`} disabled={isSubmitDisabled()}>Submit</button>
+                    {cookies.walletAddress === survey.publisherWalletId ? (
+                        <button type="button" className="admin-btn">Admin</button>
+                    ) : (
+                        <button type="button" className="admin-btn admin-btn-disabled" disabled>Admin</button>
+                    )}
+                </div>
+        </div>
+        </form>
+        </div>
+    );
+};
+>>>>>>> origin/feature/metamask-klay-contract-call-example
 
                     }}>
                       Check Result / Close
