@@ -5,18 +5,18 @@ import logo from '../../items/logo.png';
 import { useHistory } from 'react-router-dom';
 
 function Navbar(props) {
-  const [cookies, setCookie, removeCookie] = useCookies(['walletAddress']);
-  const [walletAddress, setWalletAddress] = useState(cookies.walletAddress);
+  const [walletAddress, setWalletAddress] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
   const signOutRef = useRef(null);
 
   useEffect(() => {
-    setWalletAddress(cookies.walletAddress);
-  }, [cookies]);
+    window.web3_ ? (
+    setWalletAddress(window.web3_.account)
+    ) : setWalletAddress('')
+  }, [window.web3_]);
 
   const signOut = () => {
-    removeCookie('walletAddress');
     setWalletAddress(null);
     window.location.href = '/';
   };
@@ -53,45 +53,6 @@ function Navbar(props) {
       </ul>
       <div className="separator"></div>
       <div className="navbar-right">
-        {walletAddress ? (
-          <div>
-            <div
-              className="sign-out-container"
-              onMouseEnter={handleSignOutHover}
-              onMouseLeave={() => setShowModal(false)}
-              ref={signOutRef}
-            >
-              <button className="sign-out-btn modern-btn" onClick={signOut}>
-                Sign out
-              </button>
-              <div
-                className={`modal ${showModal ? 'show-modal' : ''}`}
-                style={{
-                  top: modalPosition.y - 20,
-                  left: modalPosition.x - 120,
-                  width: 'auto',
-                  fontSize: '11 px',
-                  height: '40px',
-                  padding: '10px',
-                  paddingBottom: '0px',
-                  marginTop: '25px',
-                  backgroundColor: 'white',
-                  boxShadow: '0 0 5px rgba(0, 0, 0, 0.2) !important',
-                  border: '1px solid #BEBEBE',
-                  borderRadius: '10px',
-                  textAlign: 'left',
-                  color: '#999999'
-                }}
-              >
-                Current Addr:<br/>
-                <p style={{marginTop: '0px', fontSize: '13px', fontWeight: 'bold', color: '#333333'}}>{walletAddress}</p>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div>
-          </div>
-        )}
       </div>
     </nav>
   );

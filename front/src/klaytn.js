@@ -36,7 +36,7 @@ async function initKlaytn(abi) {
     // window.web3_.TrustSurveyContract.methods.participateSurvey(...)
     return window.web3_.TrustSurveyContract.methods.registerSurvey(surveyId, qHash, reward, maxParticipants)
             .send({
-              from: window.web3_.account,
+              from:window.web3_.account,
               gas: 200000, // arbitrary gaslimit based on https://github.com/klaytn/countbapp/blob/main/src/components/Count.js
               value: reward * maxParticipants * 1000000000000000000, // reward * maxParticipants * 1 KLAY
             })
@@ -62,7 +62,7 @@ async function initKlaytn(abi) {
   // transaction 의 gasprice 등을 확인하는 용도로만 사용했음.
   // window.web3_.deposit = (klay) => {
   //   return window.web3_.TrustSurveyContract.methods.deposit()
-  //     .send({ from: window.web3_.account, value: klay * 1000000000000000000, gas: 200000 })
+  //     .send({ from:window.web3_.account, value: klay * 1000000000000000000, gas: 200000 })
   //     .on('receipt', (receipt) => {
   //       console.log(receipt);
   //     })

@@ -12,7 +12,7 @@ function CreateSurvey() {
   const [currentStep, setCurrentStep] = useState(1);
 
   /* Modal */
-  const [isSuccessModalOpen, setIsSucessModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isFailureModalOpen, setIsFailureModalOpen] = useState(false);
 
   const handleToggleChange = () => {
@@ -57,7 +57,7 @@ function CreateSurvey() {
       "publicAttendeeEmailPattern": publicAttendeeEmailPattern,
       "maxAttendeeCount": Number(maxAttendeeCount),
       "automaticClosingDatetime": final_date,
-      "manualClosing": automaticClosure,
+      "manualClosing": true,
       "reward": Number(reward),
       "questions": questions
     })
@@ -77,7 +77,7 @@ function CreateSurvey() {
         throw new Error('Failed to fetch data');
       }
       // Show the success modal
-      setIsSucessModalOpen(true);
+      setIsSuccessModalOpen(true);
 
     } catch (error) {
       // Show the failure modal
@@ -96,7 +96,7 @@ function CreateSurvey() {
   const [automaticClosure, setAutomaticClosure] = useState(false);
   const [automaticClosingDatetime, setAutomaticClosingDatetime] = useState('');
   const [reward, setReward] = useState(0);
-  const [publisherWalletId, setPublisherWalletId] = useState('');
+  const [publisherWalletId, setPublisherWalletId] = useState(window.web3_.account);
 
   /* Form 2 */
   const [isPrivate, setIsPrivate] = useState(false);
@@ -113,17 +113,17 @@ function CreateSurvey() {
     <div>
       <Navbar />
     <div className="wrapper">
-      <Sidebar />
+      <Sidebar currentStep = {currentStep} />
     <div className="survey-container-wrapper">
       <div className="survey-container">
 
       {/* Success modal */}
-      {isSuccessModalOpen && (<Modal isOpen={isSuccessModalOpen} onRequestClose={() => setIsSucessModalOpen(false)}
+      {isSuccessModalOpen && (<Modal isOpen={isSuccessModalOpen} onRequestClose={() => setIsSuccessModalOpen(false)}
        className="modal_for_sr"
        overlayClassName="modal-overlay">
       <h3>✅ Completed</h3>
       <p>Your survey has been registered.</p>
-        <button onClick={() => {setIsSucessModalOpen(false); window.location.href = '/';}}>Close</button>
+        <button onClick={() => {setIsSuccessModalOpen(false); window.location.href = '/';}}>Close</button>
       </Modal>)}
 
       {/* Failure modal */}
@@ -163,32 +163,19 @@ function CreateSurvey() {
           <label htmlFor="desc">Survey Description:</label>
           <textarea id="desc" name="desc" value={desc} onChange={(event) => setDesc(event.target.value)}></textarea>
         </div>
-        <div className="date_wrapper">
           <div className="form-group">
-            <label>Manual Closure:</label>
-            <div className="yesandno">
-              <div className="radio">
-                <input type="radio" id="automatic-closure-yes" name="automatic-closure" value="yes" checked={automaticClosure} onChange={handleAutomaticClosureChange} />
-                <label htmlFor="automatic-closure-yes">Yes</label>
-              </div>
-              <div className="radio">
-                <input type="radio" id="automatic-closure-no" name="automatic-closure" value="no" checked={!automaticClosure} onChange={handleAutomaticClosureChange} />
-                <label htmlFor="automatic-closure-no">No</label>
-              </div>
-            </div>
           </div>
-          <div className="form-group">
-            <label htmlFor="automaticClosingDatetime">End Date:</label>
-            <input type="date" id="automaticClosingDatetime" name="automaticClosingDatetime" value={automaticClosingDatetime} onChange={(event) => setAutomaticClosingDatetime(event.target.value)} />
-          </div>
+        <div className="form-group">
+          <label htmlFor="automaticClosingDatetime">End Date:</label>
+          <input type="date" id="automaticClosingDatetime" name="automaticClosingDatetime" value={automaticClosingDatetime} onChange={(event) => setAutomaticClosingDatetime(event.target.value)} />
         </div>
         <div className="form-group">
-          <label htmlFor="reward">Compensation Amount (ETH)</label>
+          <label htmlFor="reward">Compensation Amount (KLAY)</label>
           <input type="number" id="reward" name="reward" value={reward} onChange={(event) => setReward(event.target.value)} />
         </div>
         <div className="form-group">
           <label htmlFor="publisherWalletId">Your Wallet Address</label>
-          <input type="text" id="publisherWalletId" name="publisherWalletId" value={publisherWalletId} onChange={(event) => setPublisherWalletId(event.target.value)} />
+          <input type="text" id="publisherWalletId" name="publisherWalletId" value={publisherWalletId} onChange={(event) => setPublisherWalletId(event.target.value)} disabled />
         </div>
         <button type="button" onClick={handleNextClick}>
           <i className="fas fa-arrow-right"> Next </i>

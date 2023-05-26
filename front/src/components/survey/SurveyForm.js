@@ -1,28 +1,24 @@
-<<<<<<< HEAD
-  import React, { useState } from 'react';
+  import React, { useState, useEffect } from 'react';
   import { FaTrophy, FaCalendarAlt, FaUserFriends } from 'react-icons/fa';
   import './SurveyForm.css';
   import Modal from 'react-modal'; 
-  import { useCookies } from 'react-cookie';
   import axios from 'axios';
-=======
-import React, { useState } from 'react';
-import { FaTrophy, FaCalendarAlt, FaUserFriends } from 'react-icons/fa';
-import './SurveyForm.css';
-import Modal from 'react-modal';
-import { useCookies } from 'react-cookie';
->>>>>>> origin/feature/metamask-klay-contract-call-example
 
   const SurveyForm = ({ survey }) => {
-      const [cookies] = useCookies(['walletAddress']);
       const [answers, setAnswers] = useState(survey.questions ? new Array(survey.questions.length).fill(''): '');
-      const [isSuccessModalOpen, setIsSucessModalOpen] = useState(false);
+      const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
       const [isFailureModalOpen, setIsFailureModalOpen] = useState(false);
       const [isCloseModalOpen, setIsCloseModalOpen] = useState(false);
-
       const [isAdminPageOpen, setIsAdminPageOpen] = useState(false);
 
-<<<<<<< HEAD
+      const [accountID, setAccountID] = useState('');
+
+      useEffect(() => {
+        if (window.web3_) {
+          setAccountID(window.web3_.account);
+        }
+      }, [window.web3_]);
+
       const formatClosingDate = (dateString) => {
           if (dateString) {
             const date = new Date(dateString);
@@ -31,21 +27,6 @@ import { useCookies } from 'react-cookie';
           } else {
             return " ";
           }
-=======
-      const handleAnswerChange = (index, event) => {
-        const newAnswers = [...answers];
-        newAnswers[index] = event.target.value;
-        setAnswers(newAnswers);
-      };
-
-      const handleSubmit = (event) => {
-        event.preventDefault();
-        debugger;
-        const body = {
-          surveyId: survey.id,
-          participantWalletId: cookies.walletAddress, // window.web3_.account
-          answers,
->>>>>>> origin/feature/metamask-klay-contract-call-example
         };
 
         const handleAnswerChange = (index, event) => {
@@ -55,16 +36,15 @@ import { useCookies } from 'react-cookie';
         };
       
         const handleSubmit = (e) => {
-          
           e.preventDefault();
+          const pWID = accountID;
 
           const body = {
             surveyId: survey.id,
-            participantWalletId: cookies.walletAddress,
+            participantWalletId: pWID,
             answers,
           };
-
-
+        
           fetch('http://3.27.95.249:8080/participate', {
             method: 'POST',
             headers: {
@@ -74,26 +54,26 @@ import { useCookies } from 'react-cookie';
           })
             .then((response) => {
               if (response.ok) {
-                  setIsSucessModalOpen(true);                  
+                setIsSuccessModalOpen(true);
               } else {
-                  setIsFailureModalOpen(true);
+                setIsFailureModalOpen(true);
               }
             })
             .catch((error) => {
               console.log(error);
             });
-          
+            
         };
+        
 
       const isSubmitDisabled = () => {
 
           if (survey.responses) {
-              return survey.closed || survey.responses.some((response) => response.participantWalletId === cookies.walletAddress) || survey.publisherWalletId === cookies.walletAddress;
+              return survey.closed || survey.responses.some((response) => response.participantWalletId === accountID) || survey.publisherWalletId === accountID;
           }
           return false;
       };
 
-<<<<<<< HEAD
       const handleDownloadJSON = () => {
         const jsonData = JSON.stringify(survey);
         const blob = new Blob([jsonData], { type: 'application/json' });
@@ -111,36 +91,6 @@ import { useCookies } from 'react-cookie';
         URL.revokeObjectURL(url);
       };
 
-=======
-    const isSubmitDisabled = () => {
-        if (survey.responses) {
-            return survey.responses.some((response) => response.participantWalletId === cookies.walletAddress);
-        }
-        return false;
-    };
-
-    debugger;
-
-    return (
-        <div>
-        {isSuccessModalOpen && (<Modal isOpen={isSuccessModalOpen} onRequestClose={() => setIsSucessModalOpen(false)}
-        className="modal_for_sr"
-        overlayClassName="modal-overlay">
-        <h3>✅ Completed</h3>
-        <p>Your response has been recorded.</p>
-            <button onClick={() => setIsSucessModalOpen(false)}>Close</button>
-        </Modal>)}
-
-        {/* Failure modal */}
-        {isFailureModalOpen &&
-        (<Modal isOpen={isFailureModalOpen} onRequestClose={() => setIsFailureModalOpen(false)}
-        className="modal_for_sr"
-        overlayClassName="modal-overlay">
-            <h2>Error!</h2>
-            <p>Error occurred submitting your response.</p>
-            <button onClick={() => setIsFailureModalOpen(false)}>Close</button>
-        </Modal>)}
->>>>>>> origin/feature/metamask-klay-contract-call-example
 
       // close survey
         const handleClose = (ans) => {
@@ -148,10 +98,10 @@ import { useCookies } from 'react-cookie';
           if (ans === "yes") {
               const body = {
                 surveyId: survey.id,
-                participantWalletId: cookies.walletAddress,
+                participantWalletId: accountID
               };
 
-              axios.get(`http://3.27.95.249:8080/survey/${survey.id}/close?userWalletId=${cookies.walletAddress}`)
+              axios.get(`http://3.27.95.249:8080/survey/${survey.id}/close?userWalletId=${accountID}`)
               .then(res => {
                 // If response status is 200, proceed with the intended behavior
                 if (res.status === 200) {
@@ -185,12 +135,12 @@ import { useCookies } from 'react-cookie';
               <button className="cancel-button" onClick={() => {handleClose("cancel")}}>Cancel</button>
           </Modal>)}
 
-          {isSuccessModalOpen && (<Modal isOpen={isSuccessModalOpen} onRequestClose={() => setIsSucessModalOpen(false)}
+          {isSuccessModalOpen && (<Modal isOpen={isSuccessModalOpen} onRequestClose={() => setIsSuccessModalOpen(false)}
           className="modal_for_sr"
           overlayClassName="modal-overlay">
           <h3>✅ Completed</h3>
           <p>Your request has been executed.</p>
-              <button onClick={() => {setIsSucessModalOpen(false); window.location.href = '/'}}>Close</button>
+              <button onClick={() => {setIsSuccessModalOpen(false); window.location.href = '/'}}>Close</button>
           </Modal>)}
 
           {/* Failure modal */}
@@ -223,14 +173,13 @@ import { useCookies } from 'react-cookie';
                 {isSubmitDisabled() && (
                   <div className="error_message">
                     You can't participate{' '}
-                    {cookies.walletAddress === survey.publisherWalletId
+                    {accountID === survey.publisherWalletId
                       ? 'as you are the creator of the survey.'
                       : 'as either the survey is closed or you have already responded to this survey.'}
                   </div>
                 )}
               </div>
             </div>
-<<<<<<< HEAD
                           
             {!isAdminPageOpen ? (<div className="survey-form-container survey-form-questions">
               <h2>Questions</h2>
@@ -259,7 +208,7 @@ import { useCookies } from 'react-cookie';
                   >
                     Submit
                   </button>
-                  {cookies.walletAddress === survey.publisherWalletId ? (
+                  {accountID === survey.publisherWalletId ? (
                     <button type="button" className="admin-btn" onClick={() => {
                       
                       if (survey.closed) {
@@ -269,41 +218,6 @@ import { useCookies } from 'react-cookie';
                         setIsCloseModalOpen(true)
                       }
                       // setIsAdminPageOpen(true);
-=======
-          </div>
-
-          <div className="survey-form-container survey-form-questions">
-            <h2>Questions</h2>
-            <ol>
-              {survey.questions &&
-                survey.questions.map((question, index) => (
-                  <li key={index}>
-                    <div className="survey-question">
-                      <label>{question}</label>
-                      <textarea
-                        name={`answer-${index}`}
-                        rows="4"
-                        value={answers[index]}
-                        onChange={(event) => handleAnswerChange(index, event)}
-                      />
-                    </div>
-                  </li>
-                ))}
-            </ol>
-                <div className="survey-form-footer">
-                    <button type="submit" className={`submit-btn ${isSubmitDisabled() ? 'submit-btn-disabled' : ''}`} disabled={isSubmitDisabled()}>Submit</button>
-                    {cookies.walletAddress === survey.publisherWalletId ? (
-                        <button type="button" className="admin-btn">Admin</button>
-                    ) : (
-                        <button type="button" className="admin-btn admin-btn-disabled" disabled>Admin</button>
-                    )}
-                </div>
-        </div>
-        </form>
-        </div>
-    );
-};
->>>>>>> origin/feature/metamask-klay-contract-call-example
 
                     }}>
                       Check Result / Close
@@ -311,8 +225,8 @@ import { useCookies } from 'react-cookie';
                   ) : (
                     <button
                       type="button"
-                      className={`admin-btn ${cookies.walletAddress === survey.publisherWalletId ? '' : 'admin-btn-disabled'}`}
-                      disabled={cookies.walletAddress !== survey.publisherWalletId}
+                      className={`admin-btn ${accountID === survey.publisherWalletId ? '' : 'admin-btn-disabled'}`}
+                      disabled={accountID !== survey.publisherWalletId}
                     >
                       Admin
                     </button>

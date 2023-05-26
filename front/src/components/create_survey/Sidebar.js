@@ -2,9 +2,9 @@ import React from 'react';
 import "./Sidebar.css"
 import { FaInfo, FaFileAlt, FaArrowLeft } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
-import { AiFillLock} from 'react-icons/ai'
+import { AiFillLock} from 'react-icons/ai';
 
-function Sidebar() {
+function Sidebar({ currentStep }) {
 
   const handleBackToHomepage = () => {
     window.location.href = "/";
@@ -18,15 +18,15 @@ function Sidebar() {
         </div> */}
       <h2>Progress</h2>
       <ul>
-        <li className="basic_info">
+        <li className={currentStep === 1 ? "basic_info active" : "basic_info"}>
             <FaInfo />
             <span> Basic Info</span>
         </li>
-        <li className="Participant Setting">
+        <li className={currentStep === 2 ? "participant_setting active" : "participant_setting"}>
             <AiFillLock />
             <span> Participant Setting</span>
         </li>
-        <li className="survey_creation">
+        <li className={currentStep === 0 ? "survey_creation active" : "survey_creation"}>
             <FaFileAlt />
             <span> Survey Creation</span>
         </li>

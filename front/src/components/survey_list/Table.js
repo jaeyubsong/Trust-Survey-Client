@@ -23,13 +23,13 @@ const Table = ({ surveys }) => {
   const getSticker = (survey) => {
     return (
       <div>
-        {survey.publisherWalletId === cookies.walletAddress && (<img src="https://img.shields.io/badge/Owner-green" alt="Owner badge"></img>)}
-        {survey.closed && survey.responses.some((response) => response.participantWalletId === cookies.walletAddress) ? (
+        {survey.publisherWalletId === window.web3_.account && (<img src="https://img.shields.io/badge/Owner-green" alt="Owner badge"></img>)}
+        {survey.closed && survey.responses.some((response) => response.participantWalletId === window.web3_.account) ? (
           <img src="https://img.shields.io/badge/Rewarded-yellow" alt="Rewarded badge"></img>
         ) : (
           !survey.closed ? (<img src="https://img.shields.io/badge/Open-blue" alt="Open badge"></img>) : (<img src="https://img.shields.io/badge/Closed-red" alt="Closed badge"></img>)
         )}
-        {!survey.closed && survey.responses.some((response) => response.participantWalletId === cookies.walletAddress) && (
+        {!survey.closed && survey.responses.some((response) => response.participantWalletId === window.web3_.account) && (
           <img src="https://img.shields.io/badge/Participated-purple" alt="Participated badge"></img>
         )}
       </div>

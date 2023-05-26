@@ -99,7 +99,7 @@
 
 .learn-more-button {
     padding-top: 30px;
-    background-color: #4caf50;
+    background-color: #68B3A9;
     border: none;
     color: white;
     padding: 10px;
@@ -110,4 +110,8 @@
     border-radius: 5px;
     margin: 10px 0;
     cursor: pointer;
+}
+
+.learn-more-button:hover {
+    background-color: #4db6ac;
 }
