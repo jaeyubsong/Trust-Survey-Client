@@ -41,6 +41,8 @@ const Table = ({ surveys }) => {
     )
   }
 
+  const reversedSurvey = [...surveys].reverse();
+
 
   return (
     <div className="survey-table-container">
@@ -55,11 +57,11 @@ const Table = ({ surveys }) => {
           <div className="survey-table-cell">Reward</div>
           <div className="survey-table-cell">No. of Participants</div>
         </div>
-        {surveys.map(survey => (
+        {reversedSurvey.map(survey => (
           <a href={`/survey?id=${survey.id}`} className="survey-table-row" key={survey.id}>
             <div className="survey-table-cell survey-table-sticker">{getSticker(survey)}</div>
             <div className="survey-table-cell survey-table-title">{survey.title}</div>
-            <div className="survey-table-cell survey-table-summary">{survey.summary || " "}</div>
+            <div className="survey-table-cell survey-table-summary">{survey.summary && survey.summary.length > 100 ? `${survey.summary.substring(0, 100)}...` : survey.summary || " "}</div>
             <div className="survey-table-cell survey-table-closing-date">{formatClosingDate(survey.automaticClosingDatetime)}</div>
             <div className="survey-table-cell survey-table-reward">{survey.reward || " "}</div>
             <div className="survey-table-cell survey-table-max-attendee-count">{getNumberOfParticipants(survey)}</div>
