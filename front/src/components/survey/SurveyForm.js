@@ -1,8 +1,10 @@
   import React, { useState, useEffect } from 'react';
   import { FaTrophy, FaCalendarAlt, FaUserFriends } from 'react-icons/fa';
   import './SurveyForm.css';
-  import Modal from 'react-modal'; 
+  import Modal from 'react-modal';
   import axios from 'axios';
+  import stringify from 'json-stable-stringify';
+  import web3 from 'web3';
 
   const SurveyForm = ({ survey }) => {
       const [answers, setAnswers] = useState(survey.questions ? new Array(survey.questions.length).fill(''): '');
@@ -34,7 +36,7 @@
           newAnswers[index] = event.target.value;
           setAnswers(newAnswers);
         };
-      
+
         const handleSubmit = (e) => {
           e.preventDefault();
           const pWID = accountID;
@@ -44,7 +46,16 @@
             participantWalletId: pWID,
             answers,
           };
-        
+
+          const ordered_json = stringify(body);
+          const hash = web3.utils.sha3(ordered_json) // keccak-256
+          // TODO: {surveyId}/{participantWalletId}/{hash(ordered_json)} 을 체인에 넣을까?
+          // 우선은 hash 만 넣고 필요하면 바꾸자.
+          // TODO: remove console.log and use hash properly
+          console.log(ordered_json);
+          console.log(hash);
+
+
           fetch('http://3.27.95.249:8080/participate', {
             method: 'POST',
             headers: {
@@ -62,9 +73,9 @@
             .catch((error) => {
               console.log(error);
             });
-            
+
         };
-        
+
 
       const isSubmitDisabled = () => {
 
@@ -78,15 +89,15 @@
         const jsonData = JSON.stringify(survey);
         const blob = new Blob([jsonData], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
-    
+
         const link = document.createElement('a');
         link.href = url;
         link.download = 'survey_result.json';
-    
+
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-    
+
         // Optionally, you can revoke the URL after the download
         URL.revokeObjectURL(url);
       };
@@ -119,11 +130,11 @@
             });
         }
         else {
-          setIsCloseModalOpen(false); 
+          setIsCloseModalOpen(false);
           setIsAdminPageOpen(false)
         }
       }
-      
+
       return (
           <div>
           {isCloseModalOpen && (<Modal isOpen={isCloseModalOpen} onRequestClose={() => isCloseModalOpen(true)}
@@ -144,8 +155,8 @@
           </Modal>)}
 
           {/* Failure modal */}
-          {isFailureModalOpen && 
-          (<Modal isOpen={isFailureModalOpen} onRequestClose={() => setIsFailureModalOpen(false)}  
+          {isFailureModalOpen &&
+          (<Modal isOpen={isFailureModalOpen} onRequestClose={() => setIsFailureModalOpen(false)}
           className="modal_for_sr"
           overlayClassName="modal-overlay">
               <h2>Error!</h2>
@@ -180,7 +191,7 @@
                 )}
               </div>
             </div>
-                          
+
             {!isAdminPageOpen ? (<div className="survey-form-container survey-form-questions">
               <h2>Questions</h2>
               <ol>
@@ -199,7 +210,7 @@
                     </li>
                   ))}
               </ol>
-              
+
                 <div className="survey-form-footer">
                   <button
                     type="submit"
@@ -210,7 +221,7 @@
                   </button>
                   {accountID === survey.publisherWalletId ? (
                     <button type="button" className="admin-btn" onClick={() => {
-                      
+
                       if (survey.closed) {
                         setIsAdminPageOpen(true)
                       }
@@ -231,10 +242,10 @@
                       Admin
                     </button>
                   )}
-                </div> 
-              </div> ): 
-              
-              ( 
+                </div>
+              </div> ):
+
+              (
                 <div className="survey-form-container survey-form-questions">
                     <h2>Answers Collected</h2>
                     <button type="button" class="download-button" onClick={() => {handleDownloadJSON()}}> Download JSON</button>
@@ -262,7 +273,7 @@
                           </div>
                         ))}
                     </div>
-              
+
               )
               }
             </form>
@@ -271,4 +282,3 @@
   };
 
   export default SurveyForm;
-  
