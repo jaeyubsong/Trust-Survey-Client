@@ -94,11 +94,10 @@ function CreateSurvey() {
         setIsLoading(false);
         console.log(receipt);
         setIsSuccessModalOpen(true);
-
       })
       .on('error', (error) => {
         setIsLoading(false);
-        console.log(error);
+        console.log(error); 
         setIsFailureModalOpen(true); 
 
         // Delete on Server

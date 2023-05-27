@@ -3,6 +3,8 @@
   import './SurveyForm.css';
   import Modal from 'react-modal'; 
   import axios from 'axios';
+  import stringify from 'json-stable-stringify';
+  import web3 from 'web3';
 
   const SurveyForm = ({ survey }) => {
       const [answers, setAnswers] = useState(survey.questions ? new Array(survey.questions.length).fill(''): '');
@@ -39,31 +41,55 @@
       
         const handleSubmit = (e) => {
           e.preventDefault();
+          setIsLoading(true);
           const pWID = accountID;
-
+          
           const body = {
             surveyId: survey.id,
             participantWalletId: pWID,
             answers,
           };
-        
-          fetch('http://3.27.95.249:8080/participate', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(body),
-          })
-            .then((response) => {
-              if (response.ok) {
-                setIsSuccessModalOpen(true);
-              } else {
-                setIsFailureModalOpen(true);
-              }
+
+          const ordered_json = stringify(body);
+          const responseHash = web3.utils.sha3(ordered_json) // keccak-256  
+
+          const participateSurvey = window.web3_.TrustSurveyContract.methods.participateSurvey(survey.id, responseHash)
+          debugger;
+          participateSurvey.send({
+            from: window.web3_.account,
+            gas: 3000000, // arbitrary gaslimit based on https://github.com/klaytn/countbapp/blob/main/src/components/Count.js
+            value: 0
+          }).on('receipt', (receipt) => {
+
+            fetch('http://3.27.95.249:8080/participate', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(body),
             })
-            .catch((error) => {
-              console.log(error);
-            });
+              .then((response) => {
+                if (response.ok) {  
+                  setIsLoading(false);
+                  setIsSuccessModalOpen(true);
+                } else {
+                  setIsFailureModalOpen(true);
+                }
+              })
+              .catch((error) => {
+                setIsFailureModalOpen(true);
+                console.log(error);
+              });            
+          })
+          .on('error', (error) => {
+            debugger;
+            setIsLoading(false);
+            console.log(error);
+            setIsFailureModalOpen(true); 
+          })
+    
+
+
             
         };
         
