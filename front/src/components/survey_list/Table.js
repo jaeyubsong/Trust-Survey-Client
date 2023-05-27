@@ -1,10 +1,15 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './Table.css';
-import { useCookies } from 'react-cookie';
 
 const Table = ({ surveys }) => {
 
-  const [cookies, setCookie] = useCookies(['walletAddress']);
+  const [accountID, setAccountID] = useState('');
+
+  useEffect(() => {
+    if (window.web3_) {
+      setAccountID(window.web3_.account);
+    }
+  }, [window.web3_]);
 
   const formatClosingDate = (dateString) => {
     if (dateString) {
@@ -23,13 +28,13 @@ const Table = ({ surveys }) => {
   const getSticker = (survey) => {
     return (
       <div>
-        {survey.publisherWalletId === window.web3_.account && (<img src="https://img.shields.io/badge/Owner-green" alt="Owner badge"></img>)}
-        {survey.closed && survey.responses.some((response) => response.participantWalletId === window.web3_.account) ? (
+        {survey.publisherWalletId === accountID && (<img src="https://img.shields.io/badge/Owner-green" alt="Owner badge"></img>)}
+        {survey.closed && survey.responses.some((response) => response.participantWalletId === accountID) ? (
           <img src="https://img.shields.io/badge/Rewarded-yellow" alt="Rewarded badge"></img>
         ) : (
           !survey.closed ? (<img src="https://img.shields.io/badge/Open-blue" alt="Open badge"></img>) : (<img src="https://img.shields.io/badge/Closed-red" alt="Closed badge"></img>)
         )}
-        {!survey.closed && survey.responses.some((response) => response.participantWalletId === window.web3_.account) && (
+        {!survey.closed && survey.responses.some((response) => response.participantWalletId === accountID) && (
           <img src="https://img.shields.io/badge/Participated-purple" alt="Participated badge"></img>
         )}
       </div>

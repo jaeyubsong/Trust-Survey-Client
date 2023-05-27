@@ -10,6 +10,8 @@
       const [isFailureModalOpen, setIsFailureModalOpen] = useState(false);
       const [isCloseModalOpen, setIsCloseModalOpen] = useState(false);
       const [isAdminPageOpen, setIsAdminPageOpen] = useState(false);
+      const [isLoading, setIsLoading] = useState(false);
+
 
       const [accountID, setAccountID] = useState('');
 
@@ -94,38 +96,63 @@
 
       // close survey
         const handleClose = (ans) => {
-
+          
           if (ans === "yes") {
-              const body = {
-                surveyId: survey.id,
-                participantWalletId: accountID
-              };
 
+            setIsCloseModalOpen(false);
+            setIsLoading(true);
+
+            const body = {
+              surveyId: survey.id,
+              participantWalletId: accountID
+            };
+
+            const closeSurvey = window.web3_.TrustSurveyContract.methods.closeSurvey(survey.id)
+            
+            closeSurvey.send({
+              from: window.web3_.account,
+              gas: 200000, // arbitrary gaslimit based on https://github.com/klaytn/countbapp/blob/main/src/components/Count.js
+            }).on('receipt', (receipt) => {
+              
               axios.get(`http://3.27.95.249:8080/survey/${survey.id}/close?userWalletId=${accountID}`)
               .then(res => {
                 // If response status is 200, proceed with the intended behavior
                 if (res.status === 200) {
-                  setIsCloseModalOpen(false);
-                  setIsAdminPageOpen(true);
-                } else {
-                  // If the status is not 200, log an error message
-                  setIsCloseModalOpen(false);
-                  setIsFailureModalOpen(true);
-                  console.error(`Error: Request returned status code ${res.status}`);
+                  setIsLoading(false);
+                  console.log(receipt);
+                  setIsAdminPageOpen(true);  
                 }
+                else {
+                  setIsLoading(false);
+                  setIsAdminPageOpen(false); 
+                  setIsFailureModalOpen(true);
+                }
+              })
+            }).on('error', (error) => {
+              setIsLoading(false);
+              setIsFailureModalOpen(true);
+              console.error(error.message);
             })
-            .catch(err => {
-              console.log(err);
-            });
-        }
+          }
+
         else {
           setIsCloseModalOpen(false); 
-          setIsAdminPageOpen(false)
+          setIsAdminPageOpen(false);
         }
-      }
-      
+      };
+
+
+            
+    
       return (
           <div>
+          {isLoading && (
+            <div id="loading-modal">
+              <div className="spinner"></div>
+              <div className="loading-text">Loading...</div>
+            </div>
+          )}
+
           {isCloseModalOpen && (<Modal isOpen={isCloseModalOpen} onRequestClose={() => isCloseModalOpen(true)}
           className="modal_for_sr warning"
           overlayClassName="modal-overlay">

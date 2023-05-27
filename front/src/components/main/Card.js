@@ -1,15 +1,20 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./Card.css";
 
-const Card = ({ title, description, compensation, endDate, currentMember }) => {
+const Card = ({ title, description, compensation, endDate, currentMember, id }) => {
   const [responses, maxAttendeeCount] = currentMember.split(" / ");
-
   const responsesStyle = {
     fontSize: "1.2em", // Increase font size for responses
   };
-
   const maxAttendeeCountStyle = {
     fontSize: "0.7em", // Decrease font size for maxAttendeeCount
+  };
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/survey?id=${id}`);
   };
 
   return (
@@ -23,9 +28,9 @@ const Card = ({ title, description, compensation, endDate, currentMember }) => {
       <div className="current-member-container">
         <div className="current-member">
           <span style={responsesStyle}>{responses}</span>{" "}
-          <span style={maxAttendeeCountStyle}>/ {maxAttendeeCount}</span>
+          <span style={maxAttendeeCountStyle}>/{maxAttendeeCount}</span>
         </div>
-        <button className="learn-more-button">Participate</button>
+        <button className="learn-more-button" onClick={handleClick}>Participate</button>
       </div>
     </div>
   );

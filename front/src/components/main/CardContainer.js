@@ -44,6 +44,24 @@ const CardContainer = () => {
     return `D-${days} ${hours}:${minutes}:${seconds}`;
   };
 
+  const filteredSurveys = surveys.filter(survey => {
+    const endDate = new Date(survey.automaticClosingDatetime);
+    const hasSpaceAvailable = survey.responses.length < survey.maxAttendeeCount;
+    const isExpired = endDate - currentTime <= 0;
+  
+    return !isExpired && hasSpaceAvailable;
+  });
+  
+  const sortedSurveys = filteredSurveys.sort((a, b) => {
+    const dateA = new Date(a.automaticClosingDatetime);
+    const dateB = new Date(b.automaticClosingDatetime);
+  
+    return dateB - dateA;
+  });
+  
+  const recentSurveys = sortedSurveys.slice(0, 4);
+  
+
   return (
     <div>
       <section className="title-section">
@@ -52,7 +70,7 @@ const CardContainer = () => {
       </section>
       <div className="section-divider"></div>
       <div className="card-container">
-        {surveys.slice(0,4).map((survey, index) => (
+        {recentSurveys.map((survey, index) => (
           <Card
             key={index}
             title={survey.title}
@@ -60,6 +78,7 @@ const CardContainer = () => {
             compensation={survey.reward}
             endDate={formatCountdown(survey.automaticClosingDatetime)}
             currentMember={`${survey.responses.length} / ${survey.maxAttendeeCount}`}
+            id={survey.id}
           />
         ))}
       </div>

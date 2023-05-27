@@ -10,6 +10,7 @@ import 'react-toggle/style.css';
 
 function CreateSurvey() {
   const [currentStep, setCurrentStep] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   /* Modal */
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -43,12 +44,13 @@ function CreateSurvey() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
 
     const tmp_date = new Date(automaticClosingDatetime);
     tmp_date.setHours(23, 59, 59);
     const final_date = tmp_date.toISOString().slice(0, -5) + 'Z'
 
-    const surveyData = JSON.stringify({
+    const surveyData = {
       "publisherWalletId": publisherWalletId,
       "title": title,
       "summary": summary,
@@ -60,7 +62,7 @@ function CreateSurvey() {
       "manualClosing": true,
       "reward": Number(reward),
       "questions": questions
-    })
+    }
  
     try {
       const response = await fetch('http://3.27.95.249:8080/survey', {
@@ -68,7 +70,7 @@ function CreateSurvey() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: surveyData
+        body: JSON.stringify(surveyData)
       });
 
       const responseData = await response.json();
@@ -76,15 +78,41 @@ function CreateSurvey() {
       if (response.status !== 200) {
         throw new Error('Failed to fetch data');
       }
+
       // Show the success modal
-      setIsSuccessModalOpen(true);
+      const surveyId = responseData.id
+      const qHash = "random_hash_for_now"
+      const maxParticipants = Number(maxAttendeeCount)
+
+      const registerSurvey = window.web3_.TrustSurveyContract.methods.registerSurvey(surveyId, qHash, reward, maxParticipants);
+
+      registerSurvey.send({
+        from: window.web3_.account,
+        gas: 200000, // arbitrary gaslimit based on https://github.com/klaytn/countbapp/blob/main/src/components/Count.js
+        value: reward * maxParticipants * 1000000000000000000, // reward * maxParticipants * 1 KLAY
+      }).on('receipt', (receipt) => {
+        setIsLoading(false);
+        console.log(receipt);
+        setIsSuccessModalOpen(true);
+
+      })
+      .on('error', (error) => {
+        setIsLoading(false);
+        console.log(error);
+        setIsFailureModalOpen(true); 
+
+        // Delete on Server
+        // Needs to be implemented.
+      });
 
     } catch (error) {
       // Show the failure modal
+      debugger;
       setIsFailureModalOpen(true); 
     }
 
   };
+  
 
 
   /* VARIABLES */
@@ -111,6 +139,12 @@ function CreateSurvey() {
 
   return (
     <div>
+      {isLoading && (
+        <div id="loading-modal">
+          <div className="spinner"></div>
+          <div className="loading-text">Loading...</div>
+        </div>
+      )}
       <Navbar />
     <div className="wrapper">
       <Sidebar currentStep = {currentStep} />
@@ -254,7 +288,8 @@ function CreateSurvey() {
    
 
     { /* STEP 3 */ }
-    {currentStep === 0   && ( <motion.div
+    {currentStep === 0   && ( 
+    <motion.div
           className="form-container"
           initial={{ opacity: 0 }}
           animate={{
@@ -265,6 +300,7 @@ function CreateSurvey() {
             }
           }}
         >
+
           <h2>Step 3. Survey Design</h2>
           <h4>- Design your survey here</h4>
           <form className="form3" onSubmit={handleSubmit}>
