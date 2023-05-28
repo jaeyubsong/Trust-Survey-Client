@@ -24,12 +24,18 @@ async function initKlaytn(abi) {
   // metamask 가 연동되었는지 체크하는 방법
   // https://ethereum.stackexchange.com/questions/44601/how-to-check-whether-metamask-is-installed
   const accounts = await window.ethereum.request({ method: 'eth_requestAccounts'});
+  window.ethereum.on('accountsChanged', function (accounts) {
+    console.log(`metamask account is updated from ${window.web3_.account} to ${accounts[0]}`);
+    window.web3_.account = accounts[0];
+    document.location.href = "/" // TODO: better reloading
+  });
   window.web3 = new Web3(window.ethereum);
 
   // 편한 테스트를 위해 window 에 추가함.
   // 실제로는 이 파일 scope 의 변수에 넣고 함수 wrapper 들만 export 하는게 좋을 듯.
   window.web3_ = {};
   window.web3_.account = accounts[0];
+
   window.web3_.TrustSurveyContract = new window.web3.eth.Contract(abi, '0x64F9505Ecf8e701698Bfdc80787b228c35B8Da6D');
   // ex. web3_.registerSurvey("0x12345678", "0xffff", 2, 5)
   window.web3_.registerSurvey = (surveyId, qHash, reward, maxParticipants) => {
