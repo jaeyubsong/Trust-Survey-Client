@@ -57,7 +57,7 @@
           debugger;
           participateSurvey.send({
             from: window.web3_.account,
-            gas: 3000000, // arbitrary gaslimit based on https://github.com/klaytn/countbapp/blob/main/src/components/Count.js
+            gas: 3000000,
             value: 0
           }).on('receipt', (receipt) => {
 

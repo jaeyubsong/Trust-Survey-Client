@@ -5,6 +5,8 @@ import Sidebar from './components/create_survey/Sidebar';
 import Navbar from './components/main/Navbar';
 import Toggle from 'react-toggle';
 import Modal from 'react-modal';
+import web3 from 'web3';
+import stringify from 'json-stable-stringify';
 
 import 'react-toggle/style.css';
 
@@ -63,55 +65,53 @@ function CreateSurvey() {
       "reward": Number(reward),
       "questions": questions
     }
- 
-    try {
-      const response = await fetch('http://3.27.95.249:8080/survey', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(surveyData)
-      });
+    // use hash(surveyData) to get unique string. actually secure hash is not necessary.
+    const survey_hash = web3.utils.sha3(JSON.stringify(surveyData)).slice(0, 32);
+    const current_utc = new Date().toISOString();
+    surveyData.id = `${survey_hash}_${current_utc}`;
 
-      const responseData = await response.json();
+    // 1. Chain RegisterSurvey API
+    const qHash = web3.utils.sha3(stringify(surveyData.questions))
+    const registerSurvey = window.web3_.TrustSurveyContract.methods.registerSurvey(surveyData.id, qHash, reward, maxAttendeeCount);
+    registerSurvey.send({
+      from: window.web3_.account,
+      gas: 3000000, // 200000 from https://github.com/klaytn/countbapp/blob/main/src/components/Count.js wasn't enough
+      value: reward * maxAttendeeCount * 1000000000000000000, // reward * maxParticipants * 1 KLAY
+    }).on('receipt', async (receipt) => {
+      console.log(receipt);
+      try {
+        // 2. Server RegisterSurvey API
+        const response = await fetch('http://3.27.95.249:8080/survey', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(surveyData)
+        });
 
-      if (response.status !== 200) {
-        throw new Error('Failed to fetch data');
-      }
+        const responseData = await response.json();
 
-      // Show the success modal
-      const surveyId = responseData.id
-      const qHash = "random_hash_for_now"
-      const maxParticipants = Number(maxAttendeeCount)
-
-      const registerSurvey = window.web3_.TrustSurveyContract.methods.registerSurvey(surveyId, qHash, reward, maxParticipants);
-
-      registerSurvey.send({
-        from: window.web3_.account,
-        gas: 200000, // arbitrary gaslimit based on https://github.com/klaytn/countbapp/blob/main/src/components/Count.js
-        value: reward * maxParticipants * 1000000000000000000, // reward * maxParticipants * 1 KLAY
-      }).on('receipt', (receipt) => {
+        if (response.status !== 200) {
+          throw new Error('Failed to fetch data');
+        }
+        // Show the success modal
         setIsLoading(false);
-        console.log(receipt);
+        console.log(responseData);
         setIsSuccessModalOpen(true);
-      })
-      .on('error', (error) => {
+      } catch (error) {
+        // Show the failure modal
         setIsLoading(false);
-        console.log(error); 
-        setIsFailureModalOpen(true); 
-
-        // Delete on Server
-        // Needs to be implemented.
-      });
-
-    } catch (error) {
-      // Show the failure modal
-      debugger;
-      setIsFailureModalOpen(true); 
-    }
-
+        debugger;
+        setIsFailureModalOpen(true);
+      }
+    })
+    .on('error', (error) => {
+      setIsLoading(false);
+      console.log(error);
+      setIsFailureModalOpen(true);
+    });
   };
-  
+
 
 
   /* VARIABLES */
@@ -160,8 +160,8 @@ function CreateSurvey() {
       </Modal>)}
 
       {/* Failure modal */}
-      {isFailureModalOpen && 
-      (<Modal isOpen={isFailureModalOpen} onRequestClose={() => setIsFailureModalOpen(false)}  
+      {isFailureModalOpen &&
+      (<Modal isOpen={isFailureModalOpen} onRequestClose={() => setIsFailureModalOpen(false)}
        className="modal_for_sr"
       overlayClassName="modal-overlay">
         <h2>Error!</h2>
@@ -230,7 +230,7 @@ function CreateSurvey() {
             }
           }}
         >
-          
+
           <h2>Step 2. Participant Setting</h2>
           <h4>- Set who and how many participants can join your survey!</h4>
           <form className="form2">
@@ -284,10 +284,10 @@ function CreateSurvey() {
 
         </motion.div>
       )}
-   
+
 
     { /* STEP 3 */ }
-    {currentStep === 0   && ( 
+    {currentStep === 0   && (
     <motion.div
           className="form-container"
           initial={{ opacity: 0 }}
@@ -308,11 +308,11 @@ function CreateSurvey() {
                 <label htmlFor={`q${index}`}>Question {index + 1}:</label>
                 <input
                   type="text"
-                  id={`q${index}`} 
+                  id={`q${index}`}
                   name={`q${index}`}
                   value={question}
                   onChange={(event) => handleQuestionChange(event, index)}
-                /> 
+                />
               </div>
             ))}
             <button type="button" onClick={handlePrevClick}>
