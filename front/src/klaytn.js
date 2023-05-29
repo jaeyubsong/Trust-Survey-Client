@@ -36,7 +36,7 @@ async function initKlaytn(abi) {
   window.web3_ = {};
   window.web3_.account = accounts[0];
 
-  window.web3_.TrustSurveyContract = new window.web3.eth.Contract(abi, '0x64F9505Ecf8e701698Bfdc80787b228c35B8Da6D');
+  window.web3_.TrustSurveyContract = new window.web3.eth.Contract(abi, '0x9D9739B6F8FA1Bc180912163788e5156Db640A82');
   // ex. web3_.registerSurvey("0x12345678", "0xffff", 2, 5)
   window.web3_.registerSurvey = (surveyId, qHash, reward, maxParticipants) => {
     // window.web3_.TrustSurveyContract.methods.participateSurvey(...)
