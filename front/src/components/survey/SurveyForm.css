@@ -172,3 +172,18 @@
 .cancel-button:hover {
     background-color: #E65C3D !important;
 }
+
+.verify_data {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.verify_data:hover {
+    background-color: #0056b3;
+}

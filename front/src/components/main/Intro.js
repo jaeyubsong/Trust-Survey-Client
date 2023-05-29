@@ -10,13 +10,15 @@ function Intro() {
       <div className="slogan-container">
         <h2 className="slogan-header">Trust in your voice, trust in our technology</h2>
         <p className="slogan-text">
-          Trust Survey is a revolutionary new survey design that puts the power of rewards and data security in the hands of the people. Our unique design utilizes blockchain technology to ensure that all survey participants are compensated through a secure smart contract system, eliminating the need for middlemen and guaranteeing fair compensation. Additionally, we provide unparalleled data security, ensuring that your responses remain private and free from manipulation or tampering. <br /> With <b>Trust Survey</b>, you can have confidence in your voice and trust in our technology.
+          Trust Survey is a revolutionary new survey design that puts the power of rewards and data security in the hands of the people. <br/> Our unique design utilizes blockchain technology to ensure that all survey participants are compensated through a secure smart contract system, eliminating the need for middlemen and guaranteeing fair compensation. <br /> With <b>Trust Survey</b>, you can have confidence in your voice.
         </p>
         <div className="button-container">
           <button className="create-survey-btn" onClick={() => navigate('/create_survey')}>
             Create Survey
           </button>
           <button className="survey-list-btn" onClick={() => navigate('/survey_list')}>Go to Survey List</button>
+          <button className="verify-btn" onClick={() => navigate('/verify')}>Verify Survey response</button>
+
         </div>
       </div>
     </header>

@@ -236,9 +236,9 @@ function CreateSurvey() {
           <form className="form2">
           <div className="form-group">
             <label htmlFor="privateToggle">
-              <b>🔒 Set this survey as private</b>
+              <b style={{ color: '#FF8080'}}>🔒 Set this survey as private </b> <i style={{ color: '#FF8080'}}>(Coming Soon)</i>
             </label>
-            <Toggle id="privateToggle" onChange={handleToggleChange} />
+            <Toggle id="privateToggle" onChange={handleToggleChange} disabled/>
           </div>
           <div className="form-group">
             <label htmlFor="privateAttendeeKey">Private Attendee Key:</label>
@@ -265,7 +265,7 @@ function CreateSurvey() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="maxAttendeeCount">Number of Participants:</label>
+            <label htmlFor="maxAttendeeCount">Max. Number of Participants:</label>
             <input
               type="number"
               id="maxAttendeeCount"

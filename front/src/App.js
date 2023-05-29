@@ -5,6 +5,7 @@ import CreateSurvey from './CreateSurvey';
 import SurveyList from './SurveyList';
 import Survey from './Survey';
 import Admin from './components/survey/Admin.js'
+import Verify from './Verify';
 
 function App() {
   return (
@@ -14,6 +15,8 @@ function App() {
       <Route exact path="/survey_list" element={<SurveyList />} />
       <Route exact path="/survey" element={<Survey />} />
       <Route exact path="/admin" element={<Admin />} />
+      <Route exact path="/verify" element={<Verify />} />
+
     </Routes>
   );
 }

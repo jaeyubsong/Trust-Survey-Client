@@ -7,6 +7,11 @@
     flex-wrap: wrap;
 }
 
+.survey_img {
+    width: 0px;
+}
+
+
 .section-divider {
     position: relative;
     margin-top: 20px;
@@ -50,10 +55,10 @@
     background-color: white;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    margin: 12px 12px;
-    padding: 10px;
+    margin: 24px 24px;
+    padding: 24px;
     width: 43%;
-    height: 180px;
+    height: 200px;
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
     text-align: left;

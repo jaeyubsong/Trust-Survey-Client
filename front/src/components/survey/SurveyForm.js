@@ -8,9 +8,12 @@
 
   const SurveyForm = ({ survey }) => {
       const [answers, setAnswers] = useState(survey.questions ? new Array(survey.questions.length).fill(''): '');
+      
       const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
       const [isFailureModalOpen, setIsFailureModalOpen] = useState(false);
       const [isCloseModalOpen, setIsCloseModalOpen] = useState(false);
+      const [isVerifyModalOpen, setIsVerifyModalOpen] = useState(false);  
+      
       const [isAdminPageOpen, setIsAdminPageOpen] = useState(false);
       const [isLoading, setIsLoading] = useState(false);
 
@@ -168,37 +171,39 @@
       };
 
       const handleVerifyData = (e) => {
+        setIsVerifyModalOpen(true);
         e.preventDefault();
-        const orderedResponses = survey.responses.map(resp => (stringify({surveyId: survey.id, ...resp})));
-        console.log(orderedResponses);
-        const respHashes = orderedResponses.map(resp => web3.utils.sha3(resp));
-        console.log(respHashes);
-        const orderedQuestions = stringify(survey.questions);
-        console.log(orderedQuestions);
-        const qHash = web3.utils.sha3(orderedQuestions);
-        console.log(qHash);
-        alert(`-- copy below string into keccak256 calculator--\nOriginal questions ${orderedQuestions}\nOriginal response: ${orderedResponses}`)
-        setIsLoading(true);
 
-        const getSurveyHash = window.web3_.TrustSurveyContract.methods.getSurveyHash(survey.id)
+        // const orderedResponses = survey.responses.map(resp => (stringify({surveyId: survey.id, ...resp})));
+        // console.log(orderedResponses);
+        // const respHashes = orderedResponses.map(resp => web3.utils.sha3(resp));
+        // console.log(respHashes);
+        // const orderedQuestions = stringify(survey.questions);
+        // console.log(orderedQuestions);
+        // const qHash = web3.utils.sha3(orderedQuestions);
+        // console.log(qHash);
+        // alert(`-- copy below string into keccak256 calculator--\nOriginal questions ${orderedQuestions}\nOriginal response: ${orderedResponses}`)
+        // setIsLoading(true);
 
-        getSurveyHash.send({
-          from: window.web3_.account,
-          gas: 3000000, // arbitrary gaslimit based on https://github.com/klaytn/countbapp/blob/main/src/components/Count.js
-        }).on('receipt', (receipt) => {
+        // const getSurveyHash = window.web3_.TrustSurveyContract.methods.getSurveyHash(survey.id)
 
-          console.log(receipt);
-          const qHashOnChain = receipt.events.surveyHash.returnValues[0];
-          const respHashesOnChain = receipt.events.surveyHash.returnValues[1];
-          console.log(qHashOnChain);
-          console.log(respHashesOnChain);
-          setIsLoading(false);
-          alert(`Compare these hashes with what you calculated.\nQuestion Hash in chain: ${qHashOnChain}\nAnswer Hashes in chain: ${respHashesOnChain}`)
-        }).on('error', (error) => {
-          setIsLoading(false);
-          setIsFailureModalOpen(true);
-          console.error(error.message);
-        })
+        // getSurveyHash.send({
+        //   from: window.web3_.account,
+        //   gas: 3000000, // arbitrary gaslimit based on https://github.com/klaytn/countbapp/blob/main/src/components/Count.js
+        // }).on('receipt', (receipt) => {
+
+        //   console.log(receipt);
+        //   const qHashOnChain = receipt.events.surveyHash.returnValues[0];
+        //   const respHashesOnChain = receipt.events.surveyHash.returnValues[1];
+        //   console.log(qHashOnChain);
+        //   console.log(respHashesOnChain);
+        //   setIsLoading(false);
+        //   alert(`Compare these hashes with what you calculated.\nQuestion Hash in chain: ${qHashOnChain}\nAnswer Hashes in chain: ${respHashesOnChain}`)
+        // }).on('error', (error) => {
+        //   setIsLoading(false);
+        //   setIsFailureModalOpen(true);
+        //   console.error(error.message);
+        // })
       }
 
             
@@ -352,7 +357,6 @@
               )
               }
             </form>
-          <button onClick={handleVerifyData}>Verify Data</button>
           </div>
       );
   };
