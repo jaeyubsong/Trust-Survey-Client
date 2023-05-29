@@ -21,6 +21,7 @@
       const [accountID, setAccountID] = useState('');
 
       useEffect(() => {
+
         if (window.web3_) {
           setAccountID(window.web3_.account);
         }
@@ -45,6 +46,7 @@
         const handleSubmit = (e) => {
           e.preventDefault();
           setIsLoading(true);
+
           const pWID = accountID;
           
           const body = {
@@ -57,7 +59,6 @@
           const responseHash = web3.utils.sha3(ordered_json) // keccak-256  
 
           const participateSurvey = window.web3_.TrustSurveyContract.methods.participateSurvey(survey.id, responseHash)
-          debugger;
           participateSurvey.send({
             from: window.web3_.account,
             gas: 3000000,
@@ -81,13 +82,12 @@
               })
               .catch((error) => {
                 setIsFailureModalOpen(true);
-                console.log(error);
+                // console.log(error);
               });            
           })
           .on('error', (error) => {
-            debugger;
             setIsLoading(false);
-            console.log(error);
+            // console.log(error);
             setIsFailureModalOpen(true); 
           })
     
@@ -148,7 +148,7 @@
                 // If response status is 200, proceed with the intended behavior
                 if (res.status === 200) {
                   setIsLoading(false);
-                  console.log(receipt);
+                  // console.log(receipt);
                   setIsAdminPageOpen(true);  
                 }
                 else {
@@ -160,7 +160,7 @@
             }).on('error', (error) => {
               setIsLoading(false);
               setIsFailureModalOpen(true);
-              console.error(error.message);
+              // console.error(error.message);
             })
           }
 
@@ -168,45 +168,7 @@
           setIsCloseModalOpen(false); 
           setIsAdminPageOpen(false);
         }
-      };
-
-      const handleVerifyData = (e) => {
-        setIsVerifyModalOpen(true);
-        e.preventDefault();
-
-        // const orderedResponses = survey.responses.map(resp => (stringify({surveyId: survey.id, ...resp})));
-        // console.log(orderedResponses);
-        // const respHashes = orderedResponses.map(resp => web3.utils.sha3(resp));
-        // console.log(respHashes);
-        // const orderedQuestions = stringify(survey.questions);
-        // console.log(orderedQuestions);
-        // const qHash = web3.utils.sha3(orderedQuestions);
-        // console.log(qHash);
-        // alert(`-- copy below string into keccak256 calculator--\nOriginal questions ${orderedQuestions}\nOriginal response: ${orderedResponses}`)
-        // setIsLoading(true);
-
-        // const getSurveyHash = window.web3_.TrustSurveyContract.methods.getSurveyHash(survey.id)
-
-        // getSurveyHash.send({
-        //   from: window.web3_.account,
-        //   gas: 3000000, // arbitrary gaslimit based on https://github.com/klaytn/countbapp/blob/main/src/components/Count.js
-        // }).on('receipt', (receipt) => {
-
-        //   console.log(receipt);
-        //   const qHashOnChain = receipt.events.surveyHash.returnValues[0];
-        //   const respHashesOnChain = receipt.events.surveyHash.returnValues[1];
-        //   console.log(qHashOnChain);
-        //   console.log(respHashesOnChain);
-        //   setIsLoading(false);
-        //   alert(`Compare these hashes with what you calculated.\nQuestion Hash in chain: ${qHashOnChain}\nAnswer Hashes in chain: ${respHashesOnChain}`)
-        // }).on('error', (error) => {
-        //   setIsLoading(false);
-        //   setIsFailureModalOpen(true);
-        //   console.error(error.message);
-        // })
-      }
-
-            
+      };       
     
       return (
           <div>

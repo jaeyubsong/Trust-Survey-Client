@@ -47,10 +47,10 @@ async function initKlaytn(abi) {
               value: reward * maxParticipants * 1000000000000000000, // reward * maxParticipants * 1 KLAY
             })
             .on('receipt', (receipt) => {
-              console.log(receipt);
+              // console.log(receipt);
             })
             .on('error', (error) => {
-              console.log(error); // 실제로 찍힙니다 많이 실패해봤어요
+              // console.log(error); // 실제로 찍힙니다 많이 실패해봤어요
             });
   }
 

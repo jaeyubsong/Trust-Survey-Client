@@ -78,7 +78,6 @@ function CreateSurvey() {
       gas: 3000000, // 200000 from https://github.com/klaytn/countbapp/blob/main/src/components/Count.js wasn't enough
       value: reward * maxAttendeeCount * 1000000000000000000, // reward * maxParticipants * 1 KLAY
     }).on('receipt', async (receipt) => {
-      console.log(receipt);
       try {
         // 2. Server RegisterSurvey API
         const response = await fetch('http://3.27.95.249:8080/survey', {
@@ -96,18 +95,15 @@ function CreateSurvey() {
         }
         // Show the success modal
         setIsLoading(false);
-        console.log(responseData);
         setIsSuccessModalOpen(true);
       } catch (error) {
         // Show the failure modal
         setIsLoading(false);
-        debugger;
         setIsFailureModalOpen(true);
       }
     })
     .on('error', (error) => {
       setIsLoading(false);
-      console.log(error);
       setIsFailureModalOpen(true);
     });
   };

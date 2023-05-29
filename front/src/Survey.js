@@ -6,6 +6,9 @@ import Table from './components/survey_list/Table';
 import SurveyListSide from './components/survey_list/SurveyListSide';
 import SurveyForm from './components/survey/SurveyForm';
 import './SurveyList.css';
+import stringify from 'json-stable-stringify';
+import web3 from 'web3';
+
 
 const Survey = () => {
   const [survey, setSurvey] = useState({});
@@ -15,9 +18,12 @@ const Survey = () => {
       .get(`http://3.27.95.249:8080/survey/${new URLSearchParams(window.location.search).get("id")}`)
       .then(res => {
         setSurvey(res.data);
-      })
+        // console.log(res.data.responses[0]); 
+        // console.log(stringify(res.data.responses[0]));
+        // console.log(web3.utils.sha3(stringify(res.data.responses[0])));
+      }) 
       .catch(err => {
-        console.log(err);
+        // console.log(err);
       });
   }, []);
 

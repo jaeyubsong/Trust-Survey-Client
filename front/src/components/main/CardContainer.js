@@ -12,10 +12,9 @@ const CardContainer = () => {
       .get('http://3.27.95.249:8080/survey')
       .then(res => {
         setSurveys(res.data);
-        debugger;
       })
       .catch(err => {
-        console.log(err);
+        // console.log(err);
       });
   }, []);
 

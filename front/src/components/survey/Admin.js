@@ -17,7 +17,7 @@ const Admin = () => {
         setSurvey(res.data);
       })
       .catch(err => {
-        console.log(err);
+        // console.log(err);
       });
   }, []);
 
