@@ -141,7 +141,7 @@ const VerifyContainer = () => {
             <h3> Go to below website and generate hash for below information.</h3>
             <div>
                 Website: <a href="https://emn178.github.io/online-tools/keccak_256.html">https://emn178.github.io/online-tools/keccak_256.html</a> <br/>
-                <h4>For a survey with 3 questions, the source of hashes are as follows:"</h4>
+                <h4>For a survey with 3 questions, the source of hashes would be in following format:</h4>
             </div>
             <div className="hashBoxForVerify">
                 <div className="TextBox">
@@ -172,7 +172,7 @@ const VerifyContainer = () => {
                 <button className="verify-button" onClick={handleVerQ}>Verify Question</button>
             </div>
 
-            <label>Put Answers Here! </label>
+            <label>Put Answer Here! </label>
             <div className="hashBoxForVerify">
                 <textarea
                 value={aText}
