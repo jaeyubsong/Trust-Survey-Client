@@ -177,7 +177,7 @@
         console.log(orderedQuestions);
         const qHash = web3.utils.sha3(orderedQuestions);
         console.log(qHash);
-        alert(`-- copy below string into keccak256 calculator--\nOriginal questions${orderedQuestions}\nOriginal response: ${orderedResponses}`)
+        alert(`-- copy below string into keccak256 calculator--\nOriginal questions ${orderedQuestions}\nOriginal response: ${orderedResponses}`)
         setIsLoading(true);
 
         const getSurveyHash = window.web3_.TrustSurveyContract.methods.getSurveyHash(survey.id)
@@ -188,8 +188,12 @@
         }).on('receipt', (receipt) => {
 
           console.log(receipt);
+          const qHashOnChain = receipt.events.surveyHash.returnValues[0];
+          const respHashesOnChain = receipt.events.surveyHash.returnValues[1];
+          console.log(qHashOnChain);
+          console.log(respHashesOnChain);
           setIsLoading(false);
-          alert("Compare these hashes with what you calculated.\nQuestion Hash in chain: 0x1234\nAnswer Hashes in chain: [0x1, 0x2, ...]")
+          alert(`Compare these hashes with what you calculated.\nQuestion Hash in chain: ${qHashOnChain}\nAnswer Hashes in chain: ${respHashesOnChain}`)
         }).on('error', (error) => {
           setIsLoading(false);
           setIsFailureModalOpen(true);
